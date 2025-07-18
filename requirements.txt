@@ -1,4 +1,6 @@
-fastapi 
+fastapi
 uvicorn
-mysql-connector
+mysql-connector-python
 pydantic
+python-multipart
+
