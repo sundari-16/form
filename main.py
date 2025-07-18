@@ -14,6 +14,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+def sql_connect():
+    return mysql.connector.connect(
+        host="yn061m.h.filess.io",
+        user="office_simplestgo",
+        password="41e04b4edd462ce603bbece2e3938cfddc607023",
+        database="office_simplestgo",
+        port=3307
+    )
+
 class Item(BaseModel):
     Name: str
     phno: str
@@ -22,13 +31,7 @@ class Item(BaseModel):
 
 @app.post("/reg")
 def user(data: Item):
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="office",
-        port=3307
-    )
+    mydb = sql_connect()
     mypost = mydb.cursor()
     mypost.execute(
         "insert into user (name, phno, email, password) values ('"
@@ -45,13 +48,7 @@ class LoginItem(BaseModel):
 
 @app.post("/login")
 def login(data: LoginItem):
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="office",
-        port=3307
-    )
+    mydb = sql_connect()
     mypost = mydb.cursor()
     mypost.execute(
         "select * from user where email='" + data.email + "' AND password='" + data.password + "'"
@@ -65,13 +62,7 @@ def login(data: LoginItem):
 
 @app.get("/view")
 def view():
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="office",
-        port=3307
-    )
+    mydb = sql_connect()
     mypost = mydb.cursor(dictionary=True)
     mypost.execute("select * from user")
     r = mypost.fetchall()
@@ -84,13 +75,7 @@ class UpdateItem(BaseModel):
 
 @app.post("/update/{id}")
 def update(data: UpdateItem, id: int):
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="office",
-        port=3307
-    )
+    mydb = sql_connect()
     mypost = mydb.cursor()
     mypost.execute("update user set name='" + data.name + "' where id=" + str(id))
     mydb.commit()
@@ -100,13 +85,7 @@ def update(data: UpdateItem, id: int):
 
 @app.delete("/del/{id}")
 def delete(id: int):
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="office",
-        port=3307
-    )
+    mydb = sql_connect()
     mypost = mydb.cursor()
     mypost.execute("delete from user where id=" + str(id))
     mydb.commit()
